@@ -1,60 +1,73 @@
 <template>
  <div>
   <Header />
-   <div class="accueil__post">
-     <div class="publication">
-      <img :src="image" class="avatar" alt="photo de profil"><span class="user"> {{ firstname }} {{ lastname }}</span>
-        <div class="publication__post">
-           <input v-model="content" type="text" placeholder="Quoi de neuf ?">
-          <div class="publication__boutons">
-            <label for="file" class="label__publi">Ajouter un fichier</label>
-             <input type="file" accept="image/*" id="file" class="input__image" v-on:change="uploadImage">
-             <button @click="createPost()">Publier</button>
-          </div>
-        </div>
-      </div>
+    <div class="panel profile-info d-flex flex-column align-items-center mt-5">
+      <img :src="image" class="rounded-circle" width="60" alt="photo de profil"><span class="user"> {{ firstname }} {{ lastname }}</span>
+      <form>
+        <textarea v-model="content" class="form-control input-lg p-text-area border border-secondary mt-3" rows="2" placeholder="Votre texte.."></textarea>
+      </form>
+      <footer class="panel-footer">
+        <button @click="createPost()" type="button" class="btn btn-color pull-right m-3 color">Publier</button>
+        <label for="file" class="btn btn-color pull-left m-3">Ajouter un fichier</label>
+        <input type="file" accept="image/*" id="file" class="d-none" v-on:change="uploadImage">
+      </footer>
     </div>
-    <div class="fil__post" v-for="post in posts" :key="post.id">
-      <div class="post__content">
-        <div class="post">
-          <div class="post__details">
-           <div class="user__header"><img class="post__image" :src="post.User.image" alt="photo de profil">
-             <p class="post__user">{{ post.User.firstname }} {{ post.User.lastname }}<br>
-                Publié le {{ postDate(post.createdAt) }}</p>
-           </div>
-            <div>
-              <i v-if="post.userId == userId || userId ==='1'"  @click="deletePost(post.id)" class="fa fa-trash"></i>
-            </div>
-           </div>
-        </div>  
-        <div class="publi">
-          <div class="publi__details">
-            <div class="pubi__content">
-              <p>{{ post.content }}</p>
-              <div>
-               <img class="publi__image" :src="post.image">
+
+    <div class="panel  d-flex flex-column align-items-center" v-for="post in posts" :key="post.id">
+          <div class=" size__width mt-5">
+              <div class="fb-user-thumb ">
+                  <img :src="post.User.image" alt="photo de profil" >
               </div>
-            </div>
+              <div class="fb-user-details">
+                  <h3>{{ post.User.firstname }} {{ post.User.lastname }}</h3>
+                  <p>le {{ postDate(post.createdAt) }}</p>
+              </div>
+
+              <div class="clearfix d-flex justify-content-end">
+                <i v-if="post.userId == userId || userId ==='1'"  @click="deletePost(post.id)" class="fa fa-trash"></i>
+              </div>
+              <p class="fb-user-status">{{ post.content }}
+              </p>
+
+              <div class="fb-status-container fb-border">
+                  <img class="publi__image" :src="post.image">
+              </div>
+        
+        
+              <div class="fb-status-container fb-border fb-gray-bg">      
+                  <ul class="fb-comments">
+                      <li class="d-flex">
+                          <img class="rounded-circle align-baseline" :src="post.User.image" alt="photo de profil" width="50">
+                          <div class="cmt-form">
+                              <textarea v-model="comment" class="form-control" placeholder="Votre commentaire..." name=""></textarea>
+                              <button class="btn btn-color " @click="createComment(post.id)">Commenter</button>
+                          </div>
+                      </li>
+
+                      <li v-for="comment in comments" :key="comment.id">
+                        <div class="fb-user-thumb">
+                          <img :src="comment.User.image"  alt="photo de profil" width="50" class="rounded-circle">
+                        </div>
+                        <div class="fb-user-details">
+                          <h3>{{ comment.User.firstname}} {{ comment.User.lastname }}</h3>
+                          <p>{{ postDate(comment.createdAt) }} </p>
+                        </div>
+                        <div class="clearfix d-flex justify-content-end">
+                          <i v-if="comment.userId == userId || userId ==='1'" @click="deleteComment(comment.id)" class="fa fa-trash"></i>
+                        </div> 
+                        <div class="cmt-details">
+                          <p>{{ comment.textComment }}</p>
+                        </div>
+                      </li>
+                      
+                      
+                  </ul>
+                  
+              </div>
           </div>
-        <div class="comment__button">
-          <input v-model="comment" class="button__comment" type="text" placeholder="Ajouter votre commentaire">
-          <button class="comment__create" @click="createComment(post.id)">Commenter</button>
         </div>
-      <div class="comments" v-for="comment in comments" :key="comment.id">
-          <div class="comment__user">
-            <img :src="comment.User.image"  alt="photo de profil" class="comment__image">
-              <div class="comment__details">
-                <p>{{ comment.User.firstname}} {{ comment.User.lastname }}<br>
-                {{ postDate(comment.createdAt) }}
-                  <i v-if="comment.userId == userId || userId ==='1'" @click="deleteComment(comment.id)" class="fa fa-trash"></i></p>
-                <p>{{ comment.textComment }}</p>
-              </div>
-          </div>    
-         </div>
-       </div>
-      </div>
-     </div>
-    </div> 
+  </div>
+
 </template>
 
 <script>
@@ -209,183 +222,260 @@ methods: {
 }
 </script>
 
-<style scoped lang="scss">
-.accueil__post {
-    display: flex;
-    justify-content: center;
+<style > 
+body {
+    color: #797979;
+    background: white;
+    font-family: 'Open Sans', sans-serif;
+    padding: 0px !important;
+    margin: 0px !important;
+    font-size: 13px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-font-smoothing: antialiased;
+    margin-top:20px;
 }
 
-.publication {
-    border: 1px solid rgb(194, 194, 194);
-    width: 50%;
-    padding: 15px;
-    @media screen and ( max-width: 770px ) {
-      width: 70%
-    }
-    .avatar { 
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: -5px;
-    }
-    .user {
-    padding: 12px;
-    font-weight: bold;
-    }
+.cover-photo {
+    position: relative;
 }
 
-.publication__post {
-   input {
-       width: 70%;
-       padding: 15px;
-       border-radius:20px;
-       border: 1px solid rgb(194, 194, 194);
-       margin: 5px;
-   }
-   .publication__boutons {
-       display: flex;
-       justify-content: space-evenly;
-   }
-   button {
-       border-radius: 20px;
-       border:none;
-       width: 40%;
-       padding: 15px;
-       margin: 5px;
-       box-shadow: 5px 5px 10px #d4d4d4;
-       font-size: 14px;
-       font-weight: bold;
-       background-color: rgb(172, 208, 226);
-   }
+a:hover{
+    text-decoration:none;    
 }
 
-.label__publi {
-  border-radius: 20px;
-  border:none;
-  width: 40%;
-  padding: 15px;
-  margin: 5px;
-  box-shadow: 5px 5px 10px #d4d4d4;
-  font-weight: bold;
-  background-color: rgb(172, 208, 226);
-  text-align: center;
-  font-size: 14px;
-}
-
-.input__image {
-    display: none;
- }
-
-.fil__post {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px;
-}
-
-.post__content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 70%;
-  @media screen and ( max-width: 770px ) {
+.fb-timeline-img img {
     width: 100%;
-  }
-  .post {
-    border: 1px solid rgb(194, 194, 194);
-    width: 62%;
-    @media screen and ( max-width: 320px ) {
-      width: 70%;
-    }
-  }
+height:auto;
+max-height:280px;
+    border-radius: 4px 4px 0 0;
+    -webkit-border-radius: 4px 4px 0 0;
 }
 
-.post__details {
-    display: flex;
-    justify-content: space-between;
-    margin: 5px;
-    .user__header {
-    display: flex;
-    }
-    .post__image {
-    width: 50px;
-    height: 50px;
+.profile-thumb img {
+    width: 140px;
+    height: 140px;
     border-radius: 50%;
-    object-fit: cover;
-    margin: 10px;
-    }
-    .post__user {
-    padding: 5px;
-    }
-    i {
-      padding : 10px;
-    }
+    -webkit-border-radius: 50%;
+    margin-top: -90px;
+    border: 3px solid #fff;
 }
 
-.publi {
-    border: 1px solid rgb(194, 194, 194);
-    width: 62%;
-    @media screen and ( max-width: 320px ) {
-      width: 70%;
-    }
-    .publi__details {
-      margin: 10px;  
-    }
-    .publi__image {
-      width: 100%;
-      max-height: 400px;
-    }
-    i {
-        padding : 10px;
-    }
+.profile-info .panel-footer ul li a {
+    color: #7a7a7a;
 }
 
-.comment__button {
-   display: flex;
-    justify-content: space-evenly;
-    padding: 10px;
-    @media screen and ( max-width:550px ) {
-      display: flex;
-      flex-direction: column;
-    }
-    .button__comment {
-     margin: 5px;
-     padding: 15px;
-     border-radius: 20px;
-     border: 1px solid rgb(194, 194, 194);
-     width: 50%;
-     @media screen and ( max-width:450px ) {
-       width: 80%;
-       font-size: 12px;
-     }
-    }
-    .comment__create {
-     border-radius: 20px;
-     border:none;
-     width: 35%;
-     margin: 5px;
-     box-shadow: 5px 5px 10px #d4d4d4;
-     font-weight: bold;
-     @media screen and ( max-width:550px ) {
-     width: 90%;
-     padding: 15px;
-     margin-left: 10px;
-    }
-  }
+.profile-thumb {
+    float: left;
+    position: relative;
 }
 
-.comment__user {
-   display: flex;
-  .comment__image {
-    width: 50px;
-    height: 50px;
+.p-text-area, .p-text-area:focus {
+    border: none;
+    font-weight: 300;
+    box-shadow: none;
+    color: black;
+    font-size: 16px;
+    margin-right: 11em;
+}
+.btn-color{
+  background-color: #E58B78;
+  border-color: #E58B78;
+}
+
+.fb-user-mail {
+    margin: 10px 0 0 20px;
+    display: inline-block;
+}
+
+
+.fb-name  {
+    bottom: 5px;
+    left: 175px;
+    position: absolute;
+}
+
+.fb-name h2 a {
+    color: #FFFFFF;
+    text-rendering: optimizelegibility;
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+    font-size: 25px;
+}
+
+.fb-user-thumb {
+    float: left;
+    width: 70px;
+    margin-right:15px;
+}
+
+.fb-user-thumb img {
+    width: 70px;
+    height: 70px;
     border-radius: 50%;
-    object-fit: cover;
-    margin: 15px;
-  }
-  i {
-    padding-left:25px;
-  }
+    -webkit-border-radius: 50%;
+}
+
+
+.fb-user-details h3 {
+    margin: 15px 0 0;
+    font-size: 18px;
+    font-weight:800;
+}
+
+.fb-user-details p {
+    color: #c3c3c3;
+}
+
+
+.fb-user-status {
+    padding: 10px 0;
+    line-height: 20px;
+}
+
+.fb-time-action {
+    padding: 15px 0;
+}
+
+
+.fb-border {
+    border-top:1px solid #ebeef5;
+}
+
+.fb-time-action span, .fb-time-action a {
+    margin-right: 5px;
+}
+
+.fb-time-action a {
+    color: #2972a1;
+}
+
+.fb-time-action a:hover {
+    text-decoration: underline;
+}
+
+.fb-time-action span {
+    color: #5a5a5a;
+}
+
+.fb-status-container, .fb-comments li {
+    margin: 0 -15px 0 -15px;
+    padding: 0 15px;
+}
+
+.fb-gray-bg {
+    background: #f6f6f6;
+}
+
+.fb-comments li {
+    border-top:1px solid #ebeef5;
+    padding: 15px;
+}
+
+.fb-comments .cmt-thumb  {
+    width: 50px;
+    float: left;
+    margin-right: 15px;
+}
+
+.fb-comments .cmt-thumb img {
+    width: 50px;
+}
+
+.fb-comments .cmt-details {
+    padding-top: 5px;
+}
+
+
+.fb-comments .cmt-details a  {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.fb-comments .cmt-details a.like-link {
+    font-size: 12px;
+    font-weight: normal;
+}
+
+.cmt-form {
+    display: flex;
+    width: 90%;
+}
+
+.cmt-form textarea{
+    height: 50px;
+    line-height: 35px;
+}
+
+.fb-timeliner h2 {
+    background: #828283;
+    color: #fff;
+    margin-top: 0;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 4px;
+    -webkit-border-radius: 4px;
+    font-weight: 300;
+}
+
+.fb-timeliner ul {
+    margin-left:15px;
+    margin-bottom: 20px;
+    list-style-type:none;
+}
+
+.fb-comments{
+    list-style-type:none;
+}
+
+.fb-timeliner ul li {
+    margin-bottom: 3px;
+}
+
+.fb-timeliner ul li a{
+    color: #999797;
+    border-left: 4px solid #d3d7dd;
+    padding-left:10px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    display: block;
+}
+
+.fb-timeliner ul li a:hover{
+    color: #999797;
+    border-left: 4px solid #b1b1b1;
+    padding-left:10px;
+}
+
+.fb-timeliner ul li.active a{
+    color: #7a7a7a;
+    border-left: 4px solid #7a7a7a;
+    padding-left:10px;
+}
+
+.recent-highlight {
+    background: #FF6C60 !important;
+}
+
+.color {
+  background-color: #E58B78;
+  border-color: #E58B78 ;
+}
+
+.p textarea {
+  width: 150px;
+  color: Black;
+}
+
+.user {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size:x-large;
+} 
+
+.publi__image {
+  max-width: 100%;
+}
+
+.size__width {
+  width: 70%;
 }
 </style>
