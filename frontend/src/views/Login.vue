@@ -48,7 +48,7 @@ export default {
        email: '',
        password: '',
        error: '',
-       userRegex: /^[-'a-zA-ZÀ-ÖØ-öø-ÿ\s]{3,}$/,
+       userRegex: /^[-'a-zA-ZÀ-ÖØ-öø-ÿ\s]{2,}$/,
        emailRegex: /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/,
        passwordRegex:  /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{6,50}$/
       };

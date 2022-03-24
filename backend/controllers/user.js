@@ -78,7 +78,7 @@ exports.modifyUser = (req, res, next) => {
     db.User.update({ image: image }, { where: { id: req.params.id } });
   }
   db.User.update(
-    { nom: req.body.nom, firstname: req.body.firstname },
+    { lastname: req.body.lastname, firstname: req.body.firstname },
     { where: { id: req.params.id } }
   )
     .then(() => res.status(200).json({ message: 'Profil modifié'}))
