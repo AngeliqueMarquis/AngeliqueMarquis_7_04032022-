@@ -1,81 +1,47 @@
+const Like = require('../models/like');
 
-/* Possible improvement, not yet put in the site */
-
-const jwt = require("jsonwebtoken");
-const db = require('../models/index');
-
-
-
-exports.likePost = (req, res, next) => {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
-    const userId = decodedToken.userId;
-    const isliked = req.body.like
-    
-
-    db.Post.findOne({
-      
-        where: { id: req.params.postId },
-    })
-
-    .then(postfound => {
-        if(!postfound) {
-            return res.status(404).json({ error: 'Le message n\'a pas été trouvé' })
-        } else if (isliked == false) {
-            db.Like.create({ 
-                postId: req.params.postId, 
-                userId: userId 
-            })
-            .then(response => {
-                console.log(postfound.likes);
-                
-                db.Post.update({ 
-                    likes: postfound.likes +1
-                },{
-                    where: { id: req.params.postId }
-                })
-                .then(() => res.status(201).json({ message: 'Vous aimez ce message !' }))
-                .catch(error => res.status(500).json({ error: '⚠ Oops, une erreur s\'est produite !' })) 
-            })
-            .catch(error => res.status(400).json({ error: '⚠ Oops, une erreur s\'est produite !' }))
-        } else if(isliked == true) {
-            db.Like.destroy({ 
-                where: { 
-                    postId: req.params.postId, 
-                    userId: userId 
-                } 
-            })
-            .then(() => {
-                db.Post.update({ 
-                    likes: postfound.likes -1
-                },{
-                    where: { id: req.params.postId }
-                })
-                .then(() => res.status(201).json({ message: 'Vous n\'aimez plus ce message' }))
-                .catch(error => res.status(500).json({ error: '⚠ Oops, une erreur s\'est produite !' })) 
-            })
-            .catch(error => res.status(400).json({ error: '⚠ Oops, une erreur s\'est produite !' }))
-        } else {
-            console.log('ko');
+/* Afficher les likes */
+exports.getPostLikes = async (req, res) => {
+    try {
+        const like = await Like.findOne({ where: {
+            postId: req.params.id,
+            userIdLiked: req.user.id
+        }})
+        if (!like) {
+            return res.status(200).send({ message: 'Vous aimez ce message ?'})
         }
-    })
-    .catch(error => res.status(400).json({ error: 'Une erreur s\'est produite !' }))  
+        res.status(200).send(like)
+    } catch (err) {
+        res.status(500).send(err)
+    }
 }
 
-exports.getAllLike = (req, res, next) => {
-    db.Like.findAll({
-        where: { postId: req.params.postId},
-        include: {
-            model: db.User,
-        },
-    })
-    .then(likePostFound => {
-        if(likePostFound) {
-            res.status(200).json(likePostFound);
-            console.log(likePostFound);
-        } else {
-            res.status(404).json({ error: 'Aucun like trouvé' });
-        }
-    })
-    .catch(error => res.status(500).json({ error: 'Une erreur s\'est produite !' }))
+/* Créer un like */
+exports.createLike = async (req, res) => {
+    try {
+        await Like.create({
+            like: req.body.like,
+            postId: req.params.id,
+            userIdLiked: req.user.id
+        })
+        // }
+        res.status(201).send({ message: "J'aime !"})
+    } catch (err) {
+        res.status(500).send(err)
+    }
+}
+
+/* Supprimer un like */
+exports.deleteLike = async (req, res) => {
+    try {
+        await Like.destroy({
+            where: {
+                userIdLiked: req.user.id,
+                postId: req.params.id
+            }
+        })
+        res.status(200).send({ message: "Je n'aime pas !"})
+    } catch (err) {
+        res.status(500).send(err)
+    }
 }
