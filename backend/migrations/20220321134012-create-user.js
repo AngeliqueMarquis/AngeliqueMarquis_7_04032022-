@@ -10,7 +10,14 @@ module.exports = {
       },
       email: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        validate: {
+          isEmail: true
+        },
+        unique: {
+          args: 'email',
+          msg: 'Cette adresse mail est déjà utilisée!'
+      }
       },
       firstname: {
         allowNull: false,
