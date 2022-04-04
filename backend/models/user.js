@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const {Model} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -16,13 +14,21 @@ module.exports = (sequelize, DataTypes) => {
          onDelete: 'cascade'
      });
    User.hasMany(models.Comment,{
-        foreignKey : 'userId',
+        foreignKey : 'postId',
          onDelete: 'cascade'
      });
     }
   }
   User.init({
-    email: DataTypes.STRING,
+    email:{
+      type: DataTypes.STRING,
+      validate: {
+        isEmail: true
+    },
+    unique: {
+       args: 'email',
+       msg: 'The email is already taken!'
+    }},
     firstname: DataTypes.STRING,
     lastname: DataTypes.STRING,
     image: DataTypes.STRING,

@@ -9,7 +9,8 @@
       <div class="form-floating">
         <input v-model="firstname" type="text" class="form-control" id="floatingInput" placeholder="Prénom">
         <label for="floatingInput">Prénom</label>
-      </div>
+      </div> 
+      
       <div class="form-floating">
         <input v-model="lastname" type="text" class="form-control" id="floatingPassword" placeholder="Nom">
         <label for="floatingPassword">Nom</label>
