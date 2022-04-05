@@ -17,9 +17,7 @@ module.exports = {
         }
       },
       postId: {
-        validate : {
-          allowNull: false
-       },
+        allowNull: false,
         type: Sequelize.INTEGER,
         references: {
           model: 'Posts',

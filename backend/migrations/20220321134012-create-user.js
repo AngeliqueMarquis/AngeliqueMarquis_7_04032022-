@@ -11,13 +11,9 @@ module.exports = {
       email: {
         allowNull: false,
         type: Sequelize.STRING,
-        validate: {
-          isEmail: true
-        },
         unique: {
-          args: 'email',
-          msg: 'Cette adresse mail est déjà utilisée!'
-      }
+          arguments: true, 
+        }
       },
       firstname: {
         allowNull: false,
@@ -51,7 +47,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface, Sequelize) {
+  async down(queryInterface,Sequelize) {
     await queryInterface.dropTable('Users');
   }
 };
