@@ -36,8 +36,8 @@
         
               <div class="fb-status-container fb-border fb-gray-bg">      
                   <ul class="fb-comments">
-                      <li class="d-flex">
-                          <img class="rounded-circle align-baseline" :src="post.User.image" alt="photo de profil" width="50">
+                      <li class="d-flex" >
+
                           <div class="cmt-form">
                               <textarea v-model="comment" class="form-control" placeholder="Votre commentaire..." name=""></textarea>
                               <button class="btn btn-color" id="color" @click="createComment(post.id)">Commenter</button>

@@ -43,6 +43,9 @@
                     <div class="col-sm-9 text-secondary">
                       <input type="text" class="form-control">
                     </div>
+                    <div class="confirm_modification">
+                      <p>Veuillez confirmer votre mot de passe afin d'enregistrer vos données</p>
+                    </div>
                   </div>
                     <div class="col-sm-3"></div>
                     <div class="sm-4 text-secondary mt-5 d-flex flex-column align-items-center">
@@ -203,5 +206,8 @@ body{
   background:#FDCCC5 ;
 }
 
+.confirm_modification {
+  color: #cbcacc;
+}
  
 </style>
