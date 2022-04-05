@@ -2,7 +2,8 @@
 
 # BACKEND
 Go to the backend folder with the command : CD backend
-Then run the nodemon server with the command : nodemon server
+Then install with the command : npm install
+Then run the nodemon server with the command : nodemon serve
 
 
 For this project, the following dependencies have been installed:
@@ -12,10 +13,12 @@ axios, bcrypt, cors, dotenv, express, express-rate-limit, helmet, jsonwebtoken, 
 # FRONTEND 
 In the terminal:
 Go to the frontend folder with the command : CD frontend
+Then install with the command : npm install
 And run with the command : npm run serve
 
 For this project, the following dependencies have been installed:
-bootstrap, vue and eslint
+bootstrap, vue and eslint.
 
 # DATABASE
 The database is provided by mySQL.
+
