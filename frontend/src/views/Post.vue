@@ -4,11 +4,11 @@
     <div class="panel profile-info d-flex flex-column align-items-center mt-5">
       <img :src="image" class="rounded-circle" width="60" alt="photo de profil"><span class="user"> {{ firstname }} {{ lastname }}</span>
       <form>
-        <textarea v-model="content" class="form-control input-lg p-text-area border border-secondary mt-3" rows="2" placeholder="Votre texte.."></textarea>
+        <textarea v-model="content" class="form-control input-lg p-text-area border border-secondary mt-3 " rows="4" placeholder="Votre texte.."></textarea>
       </form>
       <footer class="panel-footer">
-        <button @click="createPost()" type="button" class="btn btn-color pull-right m-3 color">Publier</button>
-        <label for="file" class="btn btn-color pull-left m-3">Ajouter un fichier</label>
+        <button @click="createPost()" type="button" class="btn btn-color pull-right m-3" id="color">Publier</button>
+        <label for="file" class="btn btn-color pull-left m-3" id="color">Ajouter un fichier</label>
         <input type="file" accept="image/*" id="file" class="d-none" v-on:change="uploadImage">
       </footer>
     </div>
@@ -40,7 +40,7 @@
                           <img class="rounded-circle align-baseline" :src="post.User.image" alt="photo de profil" width="50">
                           <div class="cmt-form">
                               <textarea v-model="comment" class="form-control" placeholder="Votre commentaire..." name=""></textarea>
-                              <button class="btn btn-color " @click="createComment(post.id)">Commenter</button>
+                              <button class="btn btn-color" id="color" @click="createComment(post.id)">Commenter</button>
                           </div>
                       </li>
 
@@ -261,11 +261,11 @@ max-height:280px;
     box-shadow: none;
     color: black;
     font-size: 16px;
-    margin-right: 11em;
+    margin-right: 26em;
 }
-.btn-color{
-  background-color: #E58B78;
-  border-color: #E58B78;
+#color{
+  background-color: #ffd7d7;
+  border-color: #ffd7d7;
 }
 .fb-user-mail {
     margin: 10px 0 0 20px;
