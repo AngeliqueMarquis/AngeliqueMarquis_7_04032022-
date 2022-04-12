@@ -41,7 +41,7 @@ exports.deletePost = async (req, res, next) => {
     .catch((error) => res.status(400).json({ error }));
 };
 
-/* get all the sauce */         
+/* get all the post */         
 exports.getAllPost = (req, res, next) => {
     db.Post.findAll({
         order: [
