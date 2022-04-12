@@ -22,3 +22,7 @@ bootstrap, vue and eslint.
 # DATABASE
 The database is provided by mySQL.
 
+Please rename the ".env copy" file to ".env" and enter your data.
+
+Next, please create your database and then import the groupomania.sql file.
+
