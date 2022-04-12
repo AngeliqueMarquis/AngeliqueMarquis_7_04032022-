@@ -13,7 +13,7 @@
       </footer>
     </div>
 
-    <div class="panel  d-flex flex-column align-items-center" v-for="post in posts" :key="post.id">
+    <div class="panel  d-flex flex-column align-items-center my-5 " v-for="post in posts" :key="post.id">
           <div class=" size__width mt-5">
               <div class="fb-user-thumb ">
                   <img :src="post.User.image" alt="photo de profil" >
