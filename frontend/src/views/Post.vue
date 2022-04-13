@@ -44,19 +44,21 @@
                           </div>
                       </li>
 
-                      <li v-for="comment in comments" :key="comment.id">
-                        <div class="fb-user-thumb">
-                          <img :src="comment.User.image"  alt="photo de profil" width="50" class="rounded-circle">
-                        </div>
-                        <div class="fb-user-details">
-                          <h3>{{ comment.User.firstname}} {{ comment.User.lastname }}</h3>
-                          <p>{{ postDate(comment.createdAt) }} </p>
-                        </div>
-                        <div class="clearfix d-flex justify-content-end">
-                          <i v-if="comment.userId == userId || userId ==='1'" @click="deleteComment(comment.id)" class="fa fa-trash"></i>
-                        </div> 
-                        <div class="cmt-details">
-                          <p>{{ comment.textComment }}</p>
+                      <li v-for="comment in comments" :key="comment.id" >
+                        <div v-if="comment.postId === post.id" >
+                          <div class="fb-user-thumb">
+                            <img :src="comment.User.image"  alt="photo de profil" width="50" class="rounded-circle">
+                          </div>
+                          <div class="fb-user-details">
+                            <h3>{{ comment.User.firstname}} {{ comment.User.lastname }}</h3>
+                            <p>{{ postDate(comment.createdAt) }} </p>
+                          </div>
+                          <div class="clearfix d-flex justify-content-end">
+                            <i v-if="comment.userId == userId || userId ==='1'" @click="deleteComment(comment.id)" class="fa fa-trash"></i>
+                          </div> 
+                          <div class="cmt-details">
+                            <p>{{ comment.textComment }}</p>
+                          </div>
                         </div>
                       </li>
                       
@@ -89,6 +91,7 @@ export default {
       lastname: '',
       userId: localStorage.getItem('userId'),
       posts: [],
+      postId: '',
       comments: [],
       comment: '',
     }
