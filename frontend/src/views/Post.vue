@@ -33,7 +33,7 @@
                   <img class="publi__image" :src="post.image">
               </div>
         
-        
+            
               <div class="fb-status-container fb-border fb-gray-bg">      
                   <ul class="fb-comments">
                       <li class="d-flex" >
