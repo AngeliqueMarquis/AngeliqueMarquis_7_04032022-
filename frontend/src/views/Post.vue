@@ -33,7 +33,9 @@
                   <img class="publi__image" :src="post.image">
               </div>
         
-            
+              <div>
+                <Like v-bind:post="post"/>
+              </div>
               <div class="fb-status-container fb-border fb-gray-bg">      
                   <ul class="fb-comments">
                       <li class="d-flex" >
@@ -74,12 +76,14 @@
 
 <script>
 import Header from '../components/Header.vue';
+import Like from '../views/Like.vue';
 import axios from 'axios';
 import moment from 'moment';
 export default { 
     name: 'Post',
     components: {
-    Header 
+    Header,
+    Like, 
   },
   data () {
     return {
@@ -94,6 +98,8 @@ export default {
       postId: '',
       comments: [],
       comment: '',
+      like: false, 
+      postLike: [],
     }
 },
 beforeMount () {

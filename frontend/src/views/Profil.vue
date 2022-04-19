@@ -41,7 +41,7 @@
                       <h6 class="mb-0">Mot de passe</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                      <input type="text" class="form-control">
+                      <input type="password" v-model="password" required class="form-control">
                     </div>
                     <div class="confirm_modification">
                       <p>Veuillez confirmer votre mot de passe afin d'enregistrer vos données</p>
@@ -49,7 +49,7 @@
                   </div>
                     <div class="col-sm-3"></div>
                     <div class="sm-4 text-secondary mt-5 d-flex flex-column align-items-center">
-                      <input @click="updateUser()" type="button" class="btn btn-primary px-4" value="Enregistrer">
+                      <input @click="updateUser()" type="button" class="btn btn-primary px-4" value="Enregistrer" :disabled="!password">
                       <p class="desactivate" @click="deleteUser()">Supprimer mon compte</p>
 
                     </div>
@@ -76,7 +76,8 @@ export default {
         image: '',
         userId: localStorage.getItem('userId'),
         newFirstname: '',
-        newLastname: ''
+        newLastname: '', 
+        // valid: true,
     }
 },
 
@@ -93,6 +94,7 @@ mounted () {
        this.firstname = response.data.firstname
        this.lastname = response.data.lastname
        this.image = response.data.image  
+
  })
      .catch((error ) => {
       console.log(error);
@@ -121,10 +123,12 @@ methods : {
     },
 
     updateUser() {
+      if (confirm('Voulez vous vraiment modifier vos informations ? ') == true) {
       const id = localStorage.getItem('userId')
       const fd = new FormData()
       fd.append('firstname', this.newFirstname)
       fd.append('lastname', this.newLastname)
+      fd.append('password', this.newPassword)
       axios.put(`http://localhost:3000/api/user/${id}`, fd,{
          headers: {
           Authorization: 'Bearer ' + localStorage.getItem('token')
@@ -133,16 +137,18 @@ methods : {
         .then((response) => {
           this.newFirstname = response.data.firstname
           this.newLastname = response.data.lastname
+          this.newPassword= response.data.password
           window.location.reload();
           console.log(response);
         })
          .catch((error) => {
           console.log(error)
        });
+      }
     },
     
     deleteUser() {
-      if (confirm('Voulez vous vraiment supprimer votre compte') == true) {
+      if (confirm('Voulez vous vraiment supprimer votre compte ?') == true) {
       const id = localStorage.getItem('userId')
       axios.delete(`http://localhost:3000/api/user/${id}`, {
         headers: {

@@ -101,7 +101,7 @@ methods: {
         self.$router.push('/post')
         })
         .catch(error => {
-        console.log(error);
+        return (this.error = 'Utilisateur ou Mot de passe incorrect')
       });
     },
   }
