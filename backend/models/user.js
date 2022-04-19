@@ -13,10 +13,12 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey : 'userId',
          onDelete: 'cascade'
      });
-   User.hasMany(models.Comment,{
+      User.hasMany(models.Comment,{
         foreignKey : 'postId',
          onDelete: 'cascade'
      });
+      User.hasMany(models.Like);
+
     }
   }
   User.init({
